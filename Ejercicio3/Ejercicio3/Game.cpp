@@ -63,6 +63,27 @@ void Game::DrawGame()
 	pelotaShape.setFillColor(sf::Color::Yellow);
 	pelotaShape.setPosition(pelotaBody->GetPosition().x - 5, pelotaBody->GetPosition().y - 5);
 	wnd->draw(pelotaShape);
+
+	// Dibujamos el obstaculos
+	sf::RectangleShape obstacleShape(sf::Vector2f(10, 10));
+	obstacleShape.setFillColor(sf::Color::White);
+	obstacleShape.setOrigin(sf::Vector2f(5, 5));
+	obstacleShape.setPosition(50, 50);
+	wnd->draw(obstacleShape);
+
+	obstacleShape.setPosition(25, 25);
+	wnd->draw(obstacleShape);
+
+	obstacleShape.setPosition(25, 75);
+	wnd->draw(obstacleShape);
+
+	obstacleShape.setPosition(75, 25);
+	wnd->draw(obstacleShape);
+
+	obstacleShape.setPosition(75, 75);
+	wnd->draw(obstacleShape);
+
+	
 }
 
 void Game::DoEvents()
@@ -123,6 +144,21 @@ void Game::InitPhysics()
 	pelotaBody= Box2DHelper::CreateCircularDynamicBody(phyWorld, 5, 1.0f, 0.5, 1.0f);
 	pelotaBody->SetTransform(b2Vec2(50.0f, 10.0f), 0.0f);
 	pelotaBody->SetLinearVelocity(b2Vec2(50.0f, -25.0f));
+
+	b2Body* obstacleBody = Box2DHelper::CreateRectangularStaticBody(phyWorld, 10 , 10);
+	obstacleBody->SetTransform(b2Vec2(50.0f, 50.0f), 0.0f);
+
+	b2Body* obstacle1Body = Box2DHelper::CreateRectangularStaticBody(phyWorld, 10, 10);
+	obstacle1Body->SetTransform(b2Vec2(25.0f, 25.0f), 0.0f);
+
+	b2Body* obstacle2Body = Box2DHelper::CreateRectangularStaticBody(phyWorld, 10, 10);
+	obstacle2Body->SetTransform(b2Vec2(25.0f, 75.0f), 0.0f);
+
+	b2Body* obstacle3Body = Box2DHelper::CreateRectangularStaticBody(phyWorld, 10, 10);
+	obstacle3Body->SetTransform(b2Vec2(75.0f, 25.0f), 0.0f);
+
+	b2Body* obstacle4Body = Box2DHelper::CreateRectangularStaticBody(phyWorld, 10, 10);
+	obstacle4Body->SetTransform(b2Vec2(75.0f, 75.0f), 0.0f);
 }
 
 Game::~Game(void)
