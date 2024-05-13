@@ -39,14 +39,18 @@ void Game::DrawGame()
 { 
 	// Dibujamos el suelo
 	sf::RectangleShape groundShape(sf::Vector2f(500, 5));
+	groundShape.setOrigin(250.0f, 2.5f);
 	groundShape.setFillColor(sf::Color::Red);
-	groundShape.setPosition(0, 95);
+	groundShape.setPosition(50, 80);	
+	groundShape.setRotation(25);
 	wnd->draw(groundShape);
 
 	// Dibujamos el cuerpo de control (rectangulo)
 	sf::RectangleShape controlShape(Vector2f(10,10));
 	controlShape.setFillColor(sf::Color::Magenta);
-	controlShape.setPosition(controlBody->GetPosition().x - 5, controlBody->GetPosition().y - 5);
+	controlShape.setOrigin(5.0f, 5.0f);
+	controlShape.setPosition(controlBody->GetPosition().x, controlBody->GetPosition().y);
+	controlShape.setRotation(controlBody->GetAngle() * 180 / b2_pi);
 	wnd->draw(controlShape);
 }
 
@@ -62,13 +66,6 @@ void Game::DoEvents()
 				break;
 		}
 	}
-
-	// Movemos el cuerpo
-	controlBody->SetAwake(true);
-	if (Keyboard::isKeyPressed(Keyboard::Left))
-		controlBody->ApplyForceToCenter(b2Vec2(-1000.0f, 0), true);
-	if (Keyboard::isKeyPressed(Keyboard::Right))
-		controlBody->ApplyForceToCenter(b2Vec2(1000.0f, 0), true);
 }
 
 void Game::CheckCollitions()
@@ -100,12 +97,12 @@ void Game::InitPhysics()
 	phyWorld->SetDebugDraw(debugRender);
 
 	// Creamos un piso y paredes
-	b2Body* groundBody = Box2DHelper::CreateRectangularStaticBody(phyWorld, 100, 10);
-	groundBody->SetTransform(b2Vec2(50.0f, 100.0f), 0.0f);
-	groundBody->GetFixtureList()->SetFriction(0.5);//Agregamos rozamiento
+	groundBody = Box2DHelper::CreateRectangularStaticBody(phyWorld, 100, 5);
+	groundBody->SetTransform(b2Vec2(50.0f, 80.0f), 25 * b2_pi / 180);
+	groundBody->GetFixtureList()->SetFriction(0.6);//Agregamos rozamiento
 	
-	controlBody= Box2DHelper::CreateRectangularDynamicBody(phyWorld, 10, 10, 0.8f, 0.5f, 0.3f);
-	controlBody->SetTransform(b2Vec2(50.0f, 90.0f), 0.0f);
+	controlBody= Box2DHelper::CreateRectangularDynamicBody(phyWorld, 10, 10, 0.8f, 0.4f, 0.3f);
+	controlBody->SetTransform(b2Vec2(10.0f, 45.0f), 0.0f);
 	
 }
 
